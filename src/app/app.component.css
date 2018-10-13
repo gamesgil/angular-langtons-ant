@@ -1,0 +1,18 @@
+td {
+  border: 1px solid whitesmoke;
+    width: 10px;
+    height: 10px;
+    text-align: center;
+}
+
+.ant {
+  background-color: brown;
+}
+
+.marked {
+  background-color: green;
+}
+
+table {
+  border-collapse: collapse;
+}
