@@ -24,6 +24,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   cellStates = [];
 
+  steps = 1;
+
   ngOnInit() {
     this.cellStates = new Array(this.WIDTH * this.HEIGHT).fill(0);
   }
@@ -49,45 +51,40 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   next() {
-    console.log('next');
-
-    if (this.getCellState(this.antPos.x, this.antPos.y) === 0) {
-      if ((this.direction.x === 0 && this.direction.y === 0) ||
-          (this.direction.x === 0 && this.direction.y === 1)) {
-        this.direction = {x: -1, y: 0};
-      } else if (this.direction.x === -1 && this.direction.y === 0) {
-        this.direction = {x: 0, y: -1};
-      } else if (this.direction.x === 0 && this.direction.y === -1) {
-        this.direction = {x: 1, y: 0};
-      } else if (this.direction.x === 1 && this.direction.y === 0) {
-        this.direction = {x: 0, y: 1};
+    for (let i = 0; i < this.steps && this.state !== 'Paused'; i++) {
+      if (this.getCellState(this.antPos.x, this.antPos.y) === 0) {
+        if ((this.direction.x === 0 && this.direction.y === 0) ||
+            (this.direction.x === 0 && this.direction.y === 1)) {
+          this.direction = {x: -1, y: 0};
+        } else if (this.direction.x === -1 && this.direction.y === 0) {
+          this.direction = {x: 0, y: -1};
+        } else if (this.direction.x === 0 && this.direction.y === -1) {
+          this.direction = {x: 1, y: 0};
+        } else if (this.direction.x === 1 && this.direction.y === 0) {
+          this.direction = {x: 0, y: 1};
+        }
+      } else {
+        if ((this.direction.x === 0 && this.direction.y === 0) ||
+            (this.direction.x === 0 && this.direction.y === 1)) {
+          this.direction = {x: 1, y: 0};
+        } else if (this.direction.x === -1 && this.direction.y === 0) {
+          this.direction = {x: 0, y: 1};
+        } else if (this.direction.x === 0 && this.direction.y === -1) {
+          this.direction = {x: -1, y: 0};
+        } else if (this.direction.x === 1 && this.direction.y === 0) {
+          this.direction = {x: 0, y: -1};
+        }
       }
-    } else {
-      if ((this.direction.x === 0 && this.direction.y === 0) ||
-          (this.direction.x === 0 && this.direction.y === 1)) {
-        this.direction = {x: 1, y: 0};
-      } else if (this.direction.x === -1 && this.direction.y === 0) {
-        this.direction = {x: 0, y: 1};
-      } else if (this.direction.x === 0 && this.direction.y === -1) {
-        this.direction = {x: -1, y: 0};
-      } else if (this.direction.x === 1 && this.direction.y === 0) {
-        this.direction = {x: 0, y: -1};
+
+      this.setCellState(this.antPos, Number(!this.getCellState(this.antPos.x, this.antPos.y)));
+
+      this.antPos.x += this.direction.x;
+      this.antPos.y += this.direction.y;
+
+      if (this.antPos.x < 0 || this.antPos.y < 0 ||
+          this.antPos.x > this.WIDTH - 1 || this.antPos.y > this.HEIGHT - 1) {
+        this.state = 'Pause';
       }
-    }
-
-    console.log('bef: ', this.getCellState(this.antPos.x, this.antPos.y));
-
-    this.setCellState(this.antPos, Number(!this.getCellState(this.antPos.x, this.antPos.y)));
-
-    console.log('aft: ', this.getCellState(this.antPos.x, this.antPos.y));
-
-
-    this.antPos.x += this.direction.x;
-    this.antPos.y += this.direction.y;
-
-    if (this.antPos.x < 0 || this.antPos.y < 0 ||
-        this.antPos.x > this.WIDTH - 1 || this.antPos.y > this.HEIGHT - 1) {
-      this.state = 'Pause';
     }
   }
 
@@ -116,6 +113,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   clear() {
+    this.cellStates = new Array(this.WIDTH * this.HEIGHT).fill(0);
     this.antPos = {x: this.WIDTH / 2, y: this.HEIGHT / 2};
 
     for (let i = 0; i < this.cells.length; i++) {
