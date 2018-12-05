@@ -1,5 +1,9 @@
+* {
+  font-family: sans-serif;
+}
+
 td {
-  border: 1px solid whitesmoke;
+  border: 1px solid rgb(200, 200, 200);
     width: 10px;
     height: 10px;
     text-align: center;
@@ -15,4 +19,19 @@ td {
 
 table {
   border-collapse: collapse;
+}
+
+span, input, button {
+  padding: 4px;
+}
+
+button {
+  font-size: 1.25rem;
+  width: 80px;
+  height: 40px;
+  background: salmon;
+}
+
+.controls {
+  margin-top: 8px;
 }

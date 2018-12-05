@@ -10,7 +10,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   @ViewChildren('cell') tds;
 
   readonly WIDTH = 100;
-  readonly HEIGHT = 50;
+  readonly HEIGHT = 55;
 
   timeout: any;
 
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   speed = 500;
   state = 'Pause';
 
-  antPos = {x: this.WIDTH / 2, y: this.HEIGHT / 2};
+  antPos = {x: Math.floor(this.WIDTH / 2), y: Math.floor(this.HEIGHT / 2)};
   direction = {x: 0, y: 0};
 
   cellStates = [];
@@ -51,6 +51,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   next() {
+    console.log(this.antPos)
     for (let i = 0; i < this.steps && this.state !== 'Paused'; i++) {
       if (this.getCellState(this.antPos.x, this.antPos.y) === 0) {
         if ((this.direction.x === 0 && this.direction.y === 0) ||
@@ -114,7 +115,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   clear() {
     this.cellStates = new Array(this.WIDTH * this.HEIGHT).fill(0);
-    this.antPos = {x: this.WIDTH / 2, y: this.HEIGHT / 2};
+    this.antPos = {x: Math.floor(this.WIDTH / 2), y: Math.floor(this.HEIGHT / 2)};
 
     for (let i = 0; i < this.cells.length; i++) {
       this.cells[i].classList.remove('marked');
